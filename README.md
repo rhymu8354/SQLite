@@ -21,6 +21,8 @@ This project builds the following:
 * `SQLPlay3` -- a small playground application which demonstrates using
   `SQLite` to insert new rows, update existing rows, and delete old rows of a
   table.
+* `SQLPlay4` -- a small playground application which demonstrates using the
+  JSON1 extension to `SQLite`.
 
 ## Supported platforms / recommended toolchains
 
