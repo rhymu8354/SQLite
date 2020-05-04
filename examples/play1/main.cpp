@@ -67,8 +67,26 @@ void BindStatementParameter(
     );
 }
 
-bool StepStatement(const PreparedStatement& stmt) {
-    return (sqlite3_step(stmt.get()) == SQLITE_DONE);
+struct StepStatementResults {
+    bool done = false;
+    bool error = false;
+};
+
+StepStatementResults StepStatement(const PreparedStatement& stmt) {
+    StepStatementResults results;
+    switch (sqlite3_step(stmt.get())) {
+        case SQLITE_DONE: {
+            results.done = true;
+        } break;
+
+        case SQLITE_ROW: {
+        } break;
+
+        default: {
+            results.error = true;
+        } break;
+    }
+    return results;
 }
 
 int FetchColumnInt(
@@ -97,7 +115,7 @@ int main(int argc, char* argv[]) {
 
     // Make a prepared statement we can use to look up anything in the globals
     // table.
-    const auto stmt = BuildStatement(db, "select value from globals where key = ?");
+    auto stmt = BuildStatement(db, "SELECT value FROM globals WHERE key = ?");
 
     // Fetch something that we know is in the globals table.
     //
@@ -107,10 +125,27 @@ int main(int argc, char* argv[]) {
     //    row of results, from which we can fetch individual columns of data.
     const std::string key = "lastTerm";
     BindStatementParameter(stmt, 1, key);
-    (void)StepStatement(stmt); // First call makes the value available.
+    auto results = StepStatement(stmt);  // First call makes the value available.
+    if (results.error || results.done) {
+        fprintf(stderr, "Something unexpected happened!  Reeeeeeeeee!!!!\n");
+        return EXIT_FAILURE;
+    }
     const auto lastTerm = FetchColumnInt(stmt, 0);
-    (void)StepStatement(stmt); // Second call completes the query.
+    results = StepStatement(stmt);  // Second call completes the query.
+    if (results.error || !results.done) {
+        fprintf(stderr, "Something unexpected happened!  Reeeeeeeeee!!!!\n");
+        return EXIT_FAILURE;
+    }
     printf("lastTerm is %d\n", lastTerm);
+
+    // Now we will demonstrate the error handling.  Let's construct a new
+    // statement which will cause an error when we step it.
+    stmt = BuildStatement(db, "SELECT foo FROM bar");
+    if (StepStatement(stmt).error) {
+        fprintf(stderr, "Good, we got an error as expected.\n");
+    } else {
+        fprintf(stderr, "Oops, that should have been an error!\n");
+    }
 
     // That was fun!
     return EXIT_SUCCESS;

@@ -65,8 +65,26 @@ std::string ColumnName(
     return sqlite3_column_name(stmt.get(), index);
 }
 
-bool StepStatement(const PreparedStatement& stmt) {
-    return (sqlite3_step(stmt.get()) == SQLITE_DONE);
+struct StepStatementResults {
+    bool done = false;
+    bool error = false;
+};
+
+StepStatementResults StepStatement(const PreparedStatement& stmt) {
+    StepStatementResults results;
+    switch (sqlite3_step(stmt.get())) {
+        case SQLITE_DONE: {
+            results.done = true;
+        } break;
+
+        case SQLITE_ROW: {
+        } break;
+
+        default: {
+            results.error = true;
+        } break;
+    }
+    return results;
 }
 
 int FetchColumnInt(
@@ -76,7 +94,8 @@ int FetchColumnInt(
     return sqlite3_column_int(stmt.get(), index);
 }
 
-bool IsColumnNull(const PreparedStatement& stmt,
+bool IsColumnNull(
+    const PreparedStatement& stmt,
     int index
 ) {
     return (sqlite3_column_type(stmt.get(), index) == SQLITE_NULL);
@@ -101,7 +120,7 @@ int main(int argc, char* argv[]) {
     // Make a prepared statement we can use to look up some attributes
     // of all characters.  Pick the key, one attribute which both
     // characters have, and another attribute which only one character has.
-    const auto stmt = BuildStatement(db, "select entity, hp, con from characters");
+    const auto stmt = BuildStatement(db, "SELECT entity, hp, con FROM characters");
 
     // Fetch multiple rows and columns.
     //
@@ -110,7 +129,17 @@ int main(int argc, char* argv[]) {
     //
     // By the way, although we don't need it, we'll also demonstrate how
     // to get the column names as well.
-    while (!StepStatement(stmt)) {
+    StepStatementResults stepStatementResults;
+    while (
+        stepStatementResults = StepStatement(stmt),
+        !stepStatementResults.done
+    ) {
+        // Do the right thing and check for an error first.
+        if (stepStatementResults.error) {
+            fprintf(stderr, "Something unexpected happened!  Reeeeeeeeee!!!!\n");
+            return EXIT_FAILURE;
+        }
+
         // CAUTIONARY NOTE: Relying on the database to tell us how many
         // columns there are, and the column names, is controversial.
         // We're only doing it here to show how it's done and to get
