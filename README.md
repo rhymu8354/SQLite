@@ -18,6 +18,9 @@ This project builds the following:
   `SQLite` to fetch a value from a simple key-value table.
 * `SQLPlay2` -- a small playground application which demonstrates using
   `SQLite` to fetch multiple rows and columns of data in a single query.
+* `SQLPlay3` -- a small playground application which demonstrates using
+  `SQLite` to insert new rows, update existing rows, and delete old rows of a
+  table.
 
 ## Supported platforms / recommended toolchains
 

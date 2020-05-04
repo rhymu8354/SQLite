@@ -93,3 +93,26 @@ target_link_libraries(${Playground2} PUBLIC
 add_custom_command(TARGET ${Playground2} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_PROPERTY:${This},SOURCE_DIR>/examples/play2/test.db $<TARGET_FILE_DIR:${Playground2}>/play2.db
 )
+
+# ---------------------------------------------------------------------------
+# SQLPlay3: inserting, updating, and deleting rows
+# ---------------------------------------------------------------------------
+
+set (Playground3 SQLPlay3)
+
+set (PlaygroundSources3
+    examples/play3/main.cpp
+)
+
+add_executable(${Playground3} ${PlaygroundSources3})
+set_target_properties(${Playground3} PROPERTIES
+    FOLDER Applications
+)
+
+target_link_libraries(${Playground3} PUBLIC
+    ${This}
+)
+
+add_custom_command(TARGET ${Playground3} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_PROPERTY:${This},SOURCE_DIR>/examples/play3/test.db $<TARGET_FILE_DIR:${Playground3}>/play3.db
+)
