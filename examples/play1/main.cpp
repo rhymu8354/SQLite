@@ -1,5 +1,5 @@
 /**
- * @file play1/main.cpp
+ * @file examples/play1/main.cpp
  *
  * This is a small playground application for experimenting with SQLite.
  *
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     // sqlite> insert into globals values("lastTerm", 3720);
     // sqlite> insert into globals values("lastIndex", 38962673);
     //
-    const auto db = OpenDatabase("play1.db");
+    const auto db = OpenDatabase("test.db");
     if (!db) {
         fprintf(stderr, "Unable to open database!\r\n");
         return EXIT_FAILURE;

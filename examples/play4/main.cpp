@@ -1,5 +1,5 @@
 /**
- * @file play4/main.cpp
+ * @file examples/play4/main.cpp
  *
  * This is a small playground application for experimenting with SQLite.
  *
@@ -195,7 +195,7 @@ int main(int argc, char* argv[]) {
     // sqlite> create table doors(entity int primary key, locked int(1), open int(1), on_close text, on_open text);
     // sqlite> insert into doors values(44466, 0, 1, json('{"tile": {"id": 2}}'), json('{"tile": {"id": 1}}'));
     //
-    const auto db = OpenDatabase("play4.db");
+    const auto db = OpenDatabase("test.db");
     if (!db) {
         fprintf(stderr, "Unable to open database!\n");
         return EXIT_FAILURE;

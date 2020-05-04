@@ -1,5 +1,5 @@
 /**
- * @file play2/main.cpp
+ * @file examples/play2/main.cpp
  *
  * This is a small playground application for experimenting with SQLite.
  *
@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
     // sqlite> insert into characters values(523, 0, 14, 16, 18, 24, 15, 16);
     // sqlite> insert into characters values(3330, 4, null, 16, 10000, 10000, null, null);
     //
-    const auto db = OpenDatabase("play2.db");
+    const auto db = OpenDatabase("test.db");
     if (!db) {
         fprintf(stderr, "Unable to open database!\r\n");
         return EXIT_FAILURE;
