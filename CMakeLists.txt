@@ -45,20 +45,51 @@ target_link_libraries(${Shell} PUBLIC
 )
 
 #############################################################################
-# Here is a little playground app for experimenting with SQLite
+# Here are some little playground apps for experimenting with SQLite
 #############################################################################
 
-set (Playground SQLPlay)
+# ---------------------------------------------------------------------------
+# SQLPlay1: extremely simple key-value kind of table
+# ---------------------------------------------------------------------------
 
-set (PlaygroundSources
-    examples/play.cpp
+set (Playground1 SQLPlay1)
+
+set (PlaygroundSources1
+    examples/play1/main.cpp
 )
 
-add_executable(${Playground} ${PlaygroundSources})
-set_target_properties(${Playground} PROPERTIES
+add_executable(${Playground1} ${PlaygroundSources1})
+set_target_properties(${Playground1} PROPERTIES
     FOLDER Applications
 )
 
-target_link_libraries(${Playground} PUBLIC
+target_link_libraries(${Playground1} PUBLIC
     ${This}
+)
+
+add_custom_command(TARGET ${Playground1} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_PROPERTY:${This},SOURCE_DIR>/examples/play1/test.db $<TARGET_FILE_DIR:${Playground1}>/play1.db
+)
+
+# ---------------------------------------------------------------------------
+# SQLPlay2: fetching multiple rows in one query
+# ---------------------------------------------------------------------------
+
+set (Playground2 SQLPlay2)
+
+set (PlaygroundSources2
+    examples/play2/main.cpp
+)
+
+add_executable(${Playground2} ${PlaygroundSources2})
+set_target_properties(${Playground2} PROPERTIES
+    FOLDER Applications
+)
+
+target_link_libraries(${Playground2} PUBLIC
+    ${This}
+)
+
+add_custom_command(TARGET ${Playground2} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_PROPERTY:${This},SOURCE_DIR>/examples/play2/test.db $<TARGET_FILE_DIR:${Playground2}>/play2.db
 )

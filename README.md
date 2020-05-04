@@ -14,8 +14,10 @@ This project builds the following:
   suitable for linking into any C or C++ program.
 * `sqlite3` -- a command-line shell program which can be used to interact with
   `SQLite` in a terminal.
-* `SQLPlay` -- a small playground application used to demonstrate `SQLite` and
-  experiment with its features.
+* `SQLPlay1` -- a small playground application which demonstrates using
+  `SQLite` to fetch a value from a simple key-value table.
+* `SQLPlay2` -- a small playground application which demonstrates using
+  `SQLite` to fetch multiple rows and columns of data in a single query.
 
 ## Supported platforms / recommended toolchains
 

@@ -1,7 +1,9 @@
 /**
- * @file play.cpp
+ * @file play1/main.cpp
  *
  * This is a small playground application for experimenting with SQLite.
+ *
+ * This example simply reads one value from a key-value kind of table.
  */
 
 #include <functional>
@@ -83,10 +85,10 @@ int main(int argc, char* argv[]) {
     //
     // sqlite> create table globals(key text primary key, value text);
     // sqlite> insert into globals values("GameJournalGeneration", 153010);
-    // sqlite>  insert into globals values("lastTerm", 3720);
+    // sqlite> insert into globals values("lastTerm", 3720);
     // sqlite> insert into globals values("lastIndex", 38962673);
     //
-    const auto db = OpenDatabase("test.db");
+    const auto db = OpenDatabase("play1.db");
     if (!db) {
         fprintf(stderr, "Unable to open database!\r\n");
         return EXIT_FAILURE;
@@ -101,8 +103,8 @@ int main(int argc, char* argv[]) {
     //
     // This entails the following:
     // 1. Binding values for parameters in the statement.
-    // 2. "Stepping" the statement at least once.  Each step gives us one
-    //    more row of
+    // 2. "Stepping" the statement at least once.  Each step gives us one more
+    //    row of results, from which we can fetch individual columns of data.
     const std::string key = "lastTerm";
     BindStatementParameter(stmt, 1, key);
     (void)StepStatement(stmt); // First call makes the value available.
