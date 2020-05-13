@@ -64,6 +64,13 @@ target_link_libraries(${Shell} PUBLIC
     ${This}
 )
 
+if(UNIX)
+    target_link_libraries(${This} PUBLIC
+        pthread
+        dl
+    )
+endif(UNIX)
+
 #############################################################################
 # Here are some little playground apps for experimenting with SQLite
 #############################################################################
